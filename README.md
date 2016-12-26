@@ -276,3 +276,13 @@ content 为分享内容，from 为分享发生地，to 为分享目的地，比�
 设置用户地址
 
     - (void)setLocation:(NSString *)country region:(NSString *)region city:(NSString *)city;
+
+## CocoaPods安装 ##
+
+1、在Podfile中添加，目前支持2.0以上版本
+   `pod 'HubbleDataSDK', '2.0'`  
+2、执行`pod install` 或者 `pod update`	
+	
+## 手动安装 ##
+
+将`DATracker.h` 与 `libHubbleDataSDK.a`导入到工程中
