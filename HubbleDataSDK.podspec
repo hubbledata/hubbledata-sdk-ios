@@ -3,15 +3,15 @@ Pod::Spec.new do |s|
   s.version      = "2.0"
   s.summary      = "HubbleDataSDK"
   s.homepage     = "https://da.netease.com/"
-  s.license      = { :type => 'MIT', :file => 'LICENSE' }
+  s.license      = { :type => 'MIT', :file => 'LICENSE.md' }
   s.author       = { "马守磊" => "hzmashoulei@corp.netease.com" }
   s.source       = { :git => "https://github.com/hubbledata/hubbledata-sdk-ios.git" , :tag => "v#{s.version}"}
   s.platform     = :ios, "7.0"
   s.ios.deployment_target = '7.0'
 
    s.source_files = '*.h'
-   s.preserve_paths = '*.h','HubbleDataSDK.a'
-   s.vendored_libraries = 'HubbleDataSDK.a'
+   s.preserve_paths = '*.h','libHubbleDataSDK.a'
+   s.vendored_libraries = 'libHubbleDataSDK.a'
    s.libraries = 'z','sqlite3'
    s.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CoreLocation','UIKit','Security','AdSupport','Foundation'
    s.xcconfig = {'HEADER_SEARCH_PATHS' => "${PODS_ROOT}/#{s.name}" ,'LIBRARY_SEARCH_PATHS' => "${PODS_ROOT}/#{s.name}"}
