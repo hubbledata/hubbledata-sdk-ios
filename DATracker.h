@@ -20,7 +20,7 @@
 
  Also, this SDK adopt ARC, make sure your compiler support it.
  
- Version: 1.5
+ Version: 2.0
  */
 @interface DATracker : NSObject
 
