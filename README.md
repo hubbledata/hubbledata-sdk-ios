@@ -279,8 +279,8 @@ content 为分享内容，from 为分享发生地，to 为分享目的地，比�
 
 ## CocoaPods安装 ##
 
-1、在Podfile中添加，目前支持2.0以上版本
-   `pod 'HubbleDataSDK', '2.0'`  
+1、在Podfile中添加
+   `pod 'HubbleDataSDK'`  
 2、执行`pod install` 或者 `pod update`	
 	
 ## 手动安装 ##
