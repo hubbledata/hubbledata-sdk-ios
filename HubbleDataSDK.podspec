@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "HubbleDataSDK"
-  s.version      = "2.0"
+  s.version      = "2.0.1"
   s.summary      = "HubbleDataSDK"
   s.homepage     = "https://da.netease.com/"
   s.license      = { :type => 'MIT', :file => 'LICENSE.md' }
