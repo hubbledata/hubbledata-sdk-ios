@@ -42,11 +42,40 @@
 
 --------------------------
 
+**页面自动跟踪，YES为开启，NO为关闭，默认为开**
+
+	[[DATracker sharedTracker] setPageViewTrack:YES];
+	
+**页面过滤的白名单设置**
+
+	此接口产品方可以配置（比如一些用到的第三方库、系统的一些自带的controller等），接口设置如下：
+	
+	[[DATracker sharedTracker] setFilterControllers:@[@"HTNavigationController"]];
+	
+**页面采集的自定义设置**
+
+对于 App 中的核心页面（ViewController），提供了一个 Protocol <DAScreenAutoTracker>，实现该Protocol，可以自定义的设置当前页面的title,property和url：
+
+```objc
+@protocol DAScreenAutoTracker
+@required
+//返回当前页面的Title
+-(NSString *)getScreenTitle;
+
+@optional
+//自动追踪(AutoTrack)中，实现该 Protocol 的 Controller对象可以通过接口向自动采集的事件中加入属性
+-(NSDictionary *)getTrackProperties;
+//返回当前页面的Url,用作下个页面的referrer
+-(NSString *)getScreenUrl;
+
+@end
+```
+
 **手动发送数据请调用**
 
     [[DATracker sharedTracker] upload];
     
-**设置两次数据发送的最小时间间隔，单位秒**
+**设置两次数据发送的最小时间间隔，单位秒。默认定时发送为关闭状态，设置大于0的时间间隔开启定时器，否则关闭定时器**
 
 	- (void)setUploadInterval:(NSInteger)uploadInterval;
 

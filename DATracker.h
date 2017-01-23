@@ -4,6 +4,25 @@
 @class DAPeople;
 
 /*
+ @abstract
+ Implement the protocol, SDK will auto track Screen Event with <getTrackProperties>,
+ Screen title with <getScreenTitle> and Screen URL with <getScreenUrl>.
+ 
+ @discussion
+ TrackProperties keys must be <code>NSString</code> objects and values must be
+ <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>objects.
+ */
+@protocol DAScreenAutoTracker
+@required
+-(NSString *)getScreenTitle;
+
+@optional
+-(NSDictionary *)getTrackProperties;
+-(NSString *)getScreenUrl;
+
+@end
+
+/*
  This class manages tracking and uploading work through sessions.
 
  It does provide two APIs,
@@ -20,7 +39,7 @@
 
  Also, this SDK adopt ARC, make sure your compiler support it.
  
- Version: 2.0
+ Version: 2.1
  */
 @interface DATracker : NSObject
 
@@ -74,6 +93,11 @@
 - (void)setAutoUploadOn:(BOOL)isAutoUpload;
 // Set send only on wifi status
 - (void)setSendOnWifiOn:(BOOL)sendOnWifi;
+
+// Set Page View Track. Default is <YES>.
+- (void)setPageViewTrack:(BOOL)isAllowTrack;
+// Filter Page View Track.
+- (void)setFilterControllers:(NSArray <NSString *>*)filerControllers;
 
 /*
  Enable marketing campaign tracking
