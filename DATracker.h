@@ -39,7 +39,7 @@
 
  Also, this SDK adopt ARC, make sure your compiler support it.
  
- Version: 2.1
+ Version: 2.1.4
  */
 @interface DATracker : NSObject
 
@@ -57,6 +57,12 @@
  [[DATracker sharedTracker] someFunction]
  */
 + (id)sharedTracker;
+
+// Set remoteDebug status, default is NO.
+// For more app's Debug open and activation detail. Must Called before startTrackerWithAppKey.
+- (void)setRemoteDebugOn:(BOOL)remoteDebug;
+//  URL Scheme.
+- (BOOL)handleUrl:(NSURL*)url;
 
 /*
  Tracking functionality provided by this lib should be activated by this method.
@@ -329,9 +335,7 @@
  
  @discussion
  Property keys must be <code>NSString</code> objects and values must be
- <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>,
- <code>NSArray</code>, <code>NSDictionary</code>, <code>NSDate</code> or
- <code>NSURL</code> objects.
+ <code>NSString</code>, <code>NSNumber</code>objects.
  
  @param properties      properties dictionary
  */
@@ -346,22 +350,52 @@
  
  @discussion
  Property keys must be <code>NSString</code> objects and values must be
- <code>NSString</code>, <code>NSNumber</code>, <code>NSNull</code>,
- <code>NSArray</code>, <code>NSDictionary</code>, <code>NSDate</code> or
- <code>NSURL</code> objects.
+ <code>NSString</code>, <code>NSNumber</code> objects.
  
  @param properties      properties dictionary
  @param defaultValue    overwrite existing properties that have this value
  */
 - (void)registerSuperPropertiesOnce:(NSDictionary *)properties defaultValue:(id)defaultValue;
 
-///*
-// @method
-// 
-// @abstract
-// Clears all currently set super properties.
-// */
+/*
+ @method
+ 
+ @abstract
+ Clears all currently set super properties.
+ */
 - (void)clearSuperProperties;
+
+/*
+ @methid
+ 
+ @abstract
+ Set up connection between H5 and Native. This must be called after <code>startTrackerWithAppKey</code>
+ */
+- (void)addWebViewUserAgentFlag;
+
+/*
+ @methid
+ 
+ @abstract
+ Set up connection between H5 and Native.
+ 
+ @param webView  current webview, <code>UIWebView</code> or <code>WKWebView</code>.
+ @param request  NSURLRequest.
+ */
+- (BOOL)showUpWebView:(id)webView request:(NSURLRequest *)request;
+
+/*
+ @methid
+ 
+ @abstract
+ Set up connection between H5 and Native.
+ 
+ @param webView     Current webview, <code>UIWebView</code> or <code>WKWebView</code>.
+ @param request     NSURLRequest.
+ @param properties  Properties set by user. Properties keys must be <code>NSString</code> objects and values must be
+                    <code>NSString</code>, <code>NSNumber</code> objects
+ */
+- (BOOL)showUpWebView:(id)webView request:(NSURLRequest *)request properties:(NSDictionary *)properties;
 
 @end
 

@@ -9,6 +9,7 @@
 * SystemConfiguration.framework - 获取联网方式(wifi, cellular)
 * libsqlite3.dylib - sqlite 支持
 * libz.dylib - gzip 压缩支持
+* SafariServices.framework - 渠道追踪
 
 **路径：TARGETS -> Build Phases -> Link Binary With Libraries**
 
@@ -54,7 +55,7 @@
 	
 **页面采集的自定义设置**
 
-对于 App 中的核心页面（ViewController），提供了一个 Protocol <DAScreenAutoTracker>，实现该Protocol，可以自定义的设置当前页面的title,property和url：
+对于 App 中的核心页面（ViewController），提供了一个 Protocol <DAScreenAutoTracker>：
 
 ```objc
 @protocol DAScreenAutoTracker
@@ -90,6 +91,29 @@
 **手动开启只在 WIFI 下发送数据**
 
     [[DATracker sharedTracker] setSendOnWifiOn:YES];
+
+## 远程Debug模式 ##
+使用Debug可以实时远程查看上传的debug数据，便于测试同时避免debug数据写入线上数据库
+
+注意：不要在正式发布的 App 中使用 Debug 模式！
+
+开启远程调试模式，默认为关。具体使用：
+	
+	[[DATracker sharedTracker] setRemoteDebugOn:YES];
+	
+用户需添加app的scheme为：**hubble.sdk**
+
+在app激活的时候调用**handleUrl**
+
+```objc
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[DATracker sharedTracker] handleUrl:url]) {
+        return YES;
+    }
+    return NO;
+}
+```
+	
 
 ## 推广跟踪 ##
 
@@ -245,6 +269,54 @@ content 为分享内容，from 为分享发生地，to 为分享目的地，比�
     [[DATracker sharedTracker] trackOnMissionAccomplished:@"mission-1"];
     [[DATracker sharedTracker] trackOnMissionFailed:@"mission-2" reason:@"no power"];
 
+## 打通H5和App #
+
+为了防止 H5 不在 App 环境下浏览时，track 的事件无法通过 JavaScript SDK 发送。在初始化完 iOS SDK 之后，调用如下接口：
+
+```objc
+[[DATracker sharedTracker] addWebViewUserAgentFlag];
+```
+
+需要在WebView加载完成时，调用:
+
+```objc
+- (BOOL)showUpWebView:(id)webView request:(NSURLRequest *)request;
+- (BOOL)showUpWebView:(id)webView request:(NSURLRequest *)request properties:(NSDictionary *)properties;
+```
+
+如果是UIWebView
+
+```objc
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    [properties setValue:@"testValue" forKey:@"testKey"];
+    if ([[DATracker sharedTracker] showUpWebView:webView request:request properties:properties]) {
+        return NO;
+    }
+    
+    // 在这里添加您的逻辑代码
+    
+    return YES;
+}
+```
+
+如果是WKWebView
+
+```objc
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSMutableDictionary *properties = [[NSMutableDictionary alloc] init];
+    [properties setValue:@"testValue" forKey:@"testKey"];
+    if ([[DATracker sharedTracker] showUpWebView:_webView request:navigationAction.request properties:properties]) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+    
+    // 在这里添加您的逻辑代码
+
+    decisionHandler(WKNavigationActionPolicyAllow);
+}
+```
+
 ## 设置用户属性 ##
 
 为了更准确地提供针对人群的分析服务，可以使用 SDK 的 DATracker的People 设置用户属性。用户可以在留存分析、分布分析等功能中，使用用户属性作为过滤条件，精确分析特定人群的指标。
@@ -305,13 +377,3 @@ content 为分享内容，from 为分享发生地，to 为分享目的地，比�
 设置用户地址
 
     - (void)setLocation:(NSString *)country region:(NSString *)region city:(NSString *)city;
-
-## CocoaPods安装 ##
-
-1、在Podfile中添加
-   `pod 'HubbleDataSDK'`  
-2、执行`pod install` 或者 `pod update`	
-	
-## 手动安装 ##
-
-将`DATracker.h` 与 `libHubbleDataSDK.a`导入到工程中

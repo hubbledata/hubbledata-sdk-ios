@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "HubbleDataSDK"
-  s.version      = "2.1"
+  s.version      = "2.1.4"
   s.summary      = "HubbleDataSDK"
   s.homepage     = "https://da.netease.com/"
   s.license      = { :type => 'MIT', :file => 'LICENSE.md' }
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
    s.preserve_paths = '*.h','libHubbleDataSDK.a'
    s.vendored_libraries = 'libHubbleDataSDK.a'
    s.libraries = 'z','sqlite3'
-   s.frameworks = 'SystemConfiguration', 'CoreTelephony', 'CoreLocation','UIKit','Security','AdSupport','Foundation'
+   s.frameworks = 'SystemConfiguration', 'SafariServices', 'CoreTelephony', 'CoreLocation','UIKit','Security','AdSupport','Foundation'
    s.xcconfig = {'HEADER_SEARCH_PATHS' => "${PODS_ROOT}/#{s.name}" ,'LIBRARY_SEARCH_PATHS' => "${PODS_ROOT}/#{s.name}"}
   
 end
