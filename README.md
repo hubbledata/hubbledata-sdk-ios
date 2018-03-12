@@ -15,7 +15,8 @@
 
 ## 导入 SDK ##
 
-将下载包里面 DATracker.h, libMobilytics.a 文件添加到 App 项目中
+方式一：将下载包里面 DATracker.h, libHubbleDataSDK.a 文件添加到 App 项目中
+方式二：pod 'HubbleDataSDK'
 
 ## 启用 API ##
 
@@ -91,6 +92,10 @@
 **手动开启只在 WIFI 下发送数据**
 
     [[DATracker sharedTracker] setSendOnWifiOn:YES];
+
+**设置获取定位数据的开关，默认为关闭状态**    
+
+	[[DATracker sharedTracker] setLocationOn:YES];
 
 ## 远程Debug模式 ##
 使用Debug可以实时远程查看上传的debug数据，便于测试同时避免debug数据写入线上数据库

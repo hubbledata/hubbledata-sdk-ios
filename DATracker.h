@@ -39,7 +39,7 @@
 
  Also, this SDK adopt ARC, make sure your compiler support it.
  
- Version: 2.1.4
+ Version: 2.1.5
  */
 @interface DATracker : NSObject
 
@@ -99,6 +99,8 @@
 - (void)setAutoUploadOn:(BOOL)isAutoUpload;
 // Set send only on wifi status
 - (void)setSendOnWifiOn:(BOOL)sendOnWifi;
+// Set location access switch.Default is NO.
+- (void)setLocationOn:(BOOL)isLocationOn;
 
 // Set Page View Track. Default is <YES>.
 - (void)setPageViewTrack:(BOOL)isAllowTrack;
